@@ -1,0 +1,6 @@
+#! /bin/bash
+# Disables the touchpad
+#swarp 1021 10
+DEVICE=$(xinput -list | grep TouchPad | cut -c 55-57)
+xinput set-prop $DEVICE "Device Enabled" 0
+echo Touchpad disabled

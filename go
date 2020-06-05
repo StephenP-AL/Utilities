@@ -1,0 +1,29 @@
+#! /bin/sh
+#Sets up default TMUX session, or connects to existing session if alread running
+#if pgrep tmux > /dev/null 
+if tmux list-sessions | grep Default > /dev/null
+then
+	echo "tmux session currently running"
+	tmux a -t Default
+else
+	cd ~
+#	tmux new-session -d 'vim ~/'
+	tmux new-session -s Default -d 'cfiles ~/'
+	tmux split-window -h 
+	tmux split-window -v '~/scripts/status.sh'
+	tmux resize-pane -D 10 
+	for W in $(stty size)
+	do
+		echo $W
+	done
+	W=$(expr $W / 2)
+	W=$(expr $W - 50)
+	tmux resize-pane -R $W
+	tmux select-pane -U
+	tmux split-window -v '~/scripts/menu.sh'
+	tmux select-pane -U
+	tmux resize-pane -D 10
+	tmux select-pane -D
+	tmux -2 attach-session -d
+fi
+~/scripts/session.sh

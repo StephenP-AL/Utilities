@@ -1,0 +1,55 @@
+#! /bin/bash
+# Converts PDF documents pages to individual JPG images, and displays them in FIM
+# invoke script with a pdf file as the arguement
+RBUF=10 #number of pages to innitially display while remainder of file is converted
+mkdir /tmp/pdfout
+NAME=$(basename "$1")  #Removes leading file structure
+NAME=$(echo ${NAME// /_} | cut -f 1 -d '.') #removes spaces and file extension
+PAGES=$(pdfinfo "$1" | grep Pages | cut -c 17-20)
+LAST=/tmp/pdfout/$NAME-$PAGES.jpg #File name for last page
+clear
+
+# Proccess initial pages
+echo Converting first $RBUF pages for imediate viewing, subsequent pages will continue to process in the background.
+pdftoppm -jpeg -l $RBUF "$1" "/tmp/pdfout/$NAME" #initial pages
+
+# Process subsequent pages
+if test $PAGES -gt $RBUF
+then
+	pdftoppm -q -jpeg -f `expr $RBUF + 1` "$1" "/tmp/pdfout/$NAME" > /dev/null & #subsequent pages
+fi
+#Read initial pages
+fim /tmp/pdfout/*.jpg 
+
+while true; do
+	#menu
+	clear
+	echo ""
+	echo 1. Continue reading
+	echo 2. Save images to ~/Documents/_$NAME/
+	echo 3. Exit
+read n
+case $n in
+	1)	# Resume viewing files
+		fim /tmp/pdfout/*.jpg
+		;;
+	2)	# Write converted pages to permanent location
+		mkdir ~/Documents/_$NAME
+		# Waits for last page to be converted
+		while [ ! -f "$LAST" ]; do 
+			clear
+			echo Waiting on file conversion
+			sleep 1
+		done
+		mv /tmp/pdfout/*.jpg ~/Documents/_$NAME/
+		echo Images saved to ~/Documents/_$NAME/
+		break
+		;;
+	3)	# Exit and delete temporary files
+		break
+		;;
+	*)	;;
+esac
+done
+rm -r /tmp/pdfout #remove temporary files
+

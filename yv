@@ -1,0 +1,3 @@
+#! /bin/sh
+# Play youtube videos in cli
+cvlc -V caca "$1&ftm=18"

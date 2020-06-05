@@ -1,0 +1,6 @@
+#! /bin/bash
+#Enables the touchpad
+#swarp 512 290
+DEVICE=$(xinput -list | grep TouchPad | cut -c 55-57)
+xinput set-prop $DEVICE "Device Enabled" 1
+echo Touchpad enabled
