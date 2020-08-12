@@ -1,0 +1,41 @@
+#! /bin/bash
+TLS=~/.cache/list_tmp.sh
+LIST=~/.cache/list_tmp.txt
+COUNT=1
+rm $TLS
+touch $TLS
+echo "#!/bin/bash" >> $TLS
+echo "EXIT=0" >> $TLS
+echo "while [ \$EXIT == 0 ]" >> $TLS
+echo "do" >> $TLS
+echo "clear" >> $TLS
+echo "echo SELECT SESSION" >> $TLS
+echo "echo ''" >> $TLS
+
+tmux ls > $LIST
+while read SES
+#for SES in ($LIST)
+do
+	echo "echo $COUNT: ${SES%%:*} " >> $TLS
+	COUNT=$(( $COUNT + 1 ))
+done <$LIST
+
+echo "read n" >> $TLS
+echo "case \$n in" >> $TLS
+COUNT=1
+while read SES 
+do
+	echo "	$COUNT)	SEL=${SES%%:*}" >> $TLS
+	echo "		EXIT=1" >> $TLS
+	echo "		;;" >> $TLS
+	COUNT=$(( COUNT + 1 ))
+done <$LIST
+echo "*)	echo Invalid Selection" >> $TLS
+echo "		;;" >> $TLS
+echo "esac" >> $TLS
+echo "done" >> $TLS
+echo "tmux a -t \$SEL" >> $TLS
+chmod +x $TLS
+rm $LIST
+$TLS
+
