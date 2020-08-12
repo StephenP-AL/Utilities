@@ -1,9 +1,11 @@
 #! /bin/bash
+# Set up temporary file
 TLS=~/.cache/list_tmp.sh
 LIST=~/.cache/list_tmp.txt
-COUNT=1
 rm $TLS
 touch $TLS
+
+# main loop of generated script
 echo "#!/bin/bash" >> $TLS
 echo "EXIT=0" >> $TLS
 echo "while [ \$EXIT == 0 ]" >> $TLS
@@ -12,7 +14,9 @@ echo "clear" >> $TLS
 echo "echo SELECT SESSION" >> $TLS
 echo "echo ''" >> $TLS
 
+# Read active tmux sessions into script to display in menu
 tmux ls > $LIST
+COUNT=1
 while read SES
 #for SES in ($LIST)
 do
@@ -20,8 +24,11 @@ do
 	COUNT=$(( $COUNT + 1 ))
 done <$LIST
 
+# Set up case selection
 echo "read n" >> $TLS
 echo "case \$n in" >> $TLS
+
+# Read active tmux sessions into script for case selection
 COUNT=1
 while read SES 
 do
@@ -33,8 +40,12 @@ done <$LIST
 echo "*)	echo Invalid Selection" >> $TLS
 echo "		;;" >> $TLS
 echo "esac" >> $TLS
+
+# Close out while loop and connect to session
 echo "done" >> $TLS
 echo "tmux a -t \$SEL" >> $TLS
+
+# Make script executable, remove temorary file, run new script
 chmod +x $TLS
 rm $LIST
 $TLS
