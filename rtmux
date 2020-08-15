@@ -1,4 +1,15 @@
 #! /bin/bash
+
+
+
+#============================================
+# Creates an enumerated menu of active tmux 
+# sessions, and connects to user selected 
+# Session.
+#============================================
+
+
+
 # Set up temporary file
 TLS=~/.cache/list_tmp.sh
 LIST=~/.cache/list_tmp.txt
@@ -38,6 +49,7 @@ do
 	COUNT=$(( COUNT + 1 ))
 done <$LIST
 echo "*)	echo Invalid Selection" >> $TLS
+echo "          EXIT=1" >> $TLS
 echo "		;;" >> $TLS
 echo "esac" >> $TLS
 
