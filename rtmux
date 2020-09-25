@@ -26,7 +26,7 @@ echo "echo SELECT SESSION" >> $TLS
 echo "echo ''" >> $TLS
 
 # Read active tmux sessions into script to display in menu
-tmux ls > $LIST
+tmux ls > $LIST || exit
 COUNT=1
 while read SES
 #for SES in ($LIST)
