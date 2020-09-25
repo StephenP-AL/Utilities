@@ -1,10 +1,11 @@
 #! /bin/sh
 #Sets up default TMUX session, or connects to existing session if alread running
 #if pgrep tmux > /dev/null 
-if tmux list-sessions | grep Default > /dev/null
+if tmux ls > /dev/null
 then
 	echo "tmux session currently running"
-	tmux a -t Default
+	rtmux
+#	tmux a -t Default
 else
 	cd ~
 #	tmux new-session -d 'vim ~/'
