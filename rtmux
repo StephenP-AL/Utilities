@@ -34,7 +34,10 @@ do
 	echo "echo $COUNT: ${SES%%:*} " >> $TLS
 	COUNT=$(( $COUNT + 1 ))
 done <$LIST
-
+if [ $COUNT -eq 2 ] ; then
+	tmux attach
+	exit
+fi
 # Set up case selection
 echo "read n" >> $TLS
 echo "case \$n in" >> $TLS
