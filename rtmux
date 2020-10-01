@@ -34,8 +34,12 @@ do
 	echo "echo $COUNT: ${SES%%:*} " >> $TLS
 	COUNT=$(( $COUNT + 1 ))
 done <$LIST
+
+# Handiling for 0 or 1 active sessions
 if [ $COUNT -eq 2 ] ; then
 	tmux attach
+	exit
+elif [ $COUNT -eq 1 ] ; then
 	exit
 fi
 # Set up case selection
