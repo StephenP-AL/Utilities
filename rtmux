@@ -62,7 +62,11 @@ echo "esac" >> $TLS
 
 # Close out while loop and connect to session
 echo "done" >> $TLS
+echo "if \[ \"\$TMUX\" \]; then" >> $TLS
+echo "tmux switch -t \$SEL" >> $TLS
+echo "else" >> $TLS
 echo "tmux a -t \$SEL" >> $TLS
+echo "fi" >> $TLS
 
 # Make script executable, remove temorary file, run new script
 chmod +x $TLS
