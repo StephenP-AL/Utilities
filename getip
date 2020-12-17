@@ -1,0 +1,5 @@
+#! /bin/bash
+# Passs a domain name as an argument (e.g. getip www.google.com)
+# returns the IP address and domain for use in the /etc/hosts file
+I=$(ping -c 1 $1 | grep "64 bytes from"| awk -F"[()]" '{print $2}')
+echo $I	$1
