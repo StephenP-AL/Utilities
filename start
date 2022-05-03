@@ -9,7 +9,7 @@ then
 else
 	cd ~
 #	tmux new-session -d 'vim ~/'
-	tmux new-session -s Default -d 'cfiles ~/'
+	tmux new-session -s Default -d 'vifm ~/'
 	tmux split-window -h 
 	tmux split-window -v '~/scripts/status.sh'
 	tmux resize-pane -D 10 
