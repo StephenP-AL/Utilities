@@ -1,0 +1,18 @@
+#! /bin/bash
+#Takes an arguement of a file or directory, and links it back to ~/code/
+
+#exit if no arguement
+if [[ $# -eq 0 ]] ; then
+    echo 'No file or directory specified'
+    exit 0
+fi
+
+#get the full path to avoid confusion
+DIR=$(readlink -m $1)
+
+#Get the link name 
+FILE=$(echo $1 | rev | cut -d'/' -f 1 | rev)
+
+#create the sumbolic link
+ln -s $DIR ~/code/$FILE
+
