@@ -1,0 +1,4 @@
+#! /bin/bash
+# A script to build my resume and copy the resulting pdf to my file server
+OUT="$(basename $1 .tex)"
+pdflatex $1 && yes | cp $OUT.pdf /mnt/etb/Resume/
