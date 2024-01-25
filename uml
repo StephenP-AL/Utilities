@@ -1,0 +1,16 @@
+#! /bin/bash
+if [ ! -f "$1" ]; then
+	echo "Invalid file: $1"
+	exit	
+fi
+
+INPUT="$(readlink -f $1)"
+IMG="${INPUT%.puml}.png"
+SERVER="/mnt/etb/Code/uml/$(echo $IMG | tr / _ | cut -d "_" -f 5-)"
+
+echo $INPUT
+echo $IMG
+echo $SERVER
+
+plantuml $INPUT
+cp $IMG $SERVER
